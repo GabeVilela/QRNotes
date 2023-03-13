@@ -1,0 +1,7 @@
+<div class="flex flex-col items-center justify-center p-2" *ngIf="currentNote !== undefined">
+    <div class="flex flex-1 w-[100%] flex-row justify-between gap-2">
+        <span class="text-white text-xl font-bold">{{currentNote.title}}</span>
+        <button mat-stroked-button (click)="redirectBack()">GO BACK</button>
+    </div>
+    <qrcode [qrdata]="currentNote.content" [width]="768" [errorCorrectionLevel]="'M'"></qrcode>
+</div>

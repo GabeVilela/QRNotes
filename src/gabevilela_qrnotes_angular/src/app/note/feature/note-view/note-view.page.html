@@ -1,0 +1,4 @@
+<div class="flex flex-row justify-items-stretch items-stretch">
+    <app-notes-list class="flex-[20%]"></app-notes-list>
+    <app-note-form class="flex-[80%]" [note]="currentNote" *ngIf="currentNote !== undefined" (onNoteChange)="saveUpdate($event)"></app-note-form>
+</div>

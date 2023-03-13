@@ -1,0 +1,10 @@
+:host{
+    @apply flex flex-col items-stretch p-2 gap-2;
+}
+input,textarea{
+    @apply bg-transparent text-white outline-none resize-none;
+}
+#counters{
+    @apply bg-transparent text-gray-200 text-xs;
+    text-transform: uppercase;
+}
