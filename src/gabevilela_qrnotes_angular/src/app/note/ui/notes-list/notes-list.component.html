@@ -1,5 +1,14 @@
-<div class="flex flex-col items-stretch mr-2 pl-2 h-[100vh] overflow-y-scroll overflow-x-hidden py-2">
-    <div class="p-2 text-gray-300 hover:bg-white/10 rounded-sm border-b-2 border-white/50 border-solid flex flex-row items-center justify-start hover:cursor-pointer" (click)="openNote(1)">
-        <h3>Note title</h3>
+<div class="flex flex-col h-[100vh] w-[100%] max-w-[100%] overflow-hidden">
+    <div class="flex flex-1 flex-row items-stretch justify-items-stretch p-2 pb-0 box-border">
+        <button mat-button class="flex-1" (click)="createNote()">New Note</button>
+    </div>
+    <div class="flex flex-col items-stretch mr-2 pl-2 pr-1 h-[100vh] w-[100%] max-w-[100%] overflow-y-auto overflow-x-hidden py-2" *ngIf="allNotes !== undefined" id="scrollContainer">
+        <div *ngFor="let note of allNotes; index as i">
+            <div class="p-2 text-gray-300 hover:bg-white/10 rounded-md flex flex-row gap-1 items-center justify-start hover:cursor-pointer m-1" (click)="openNote(note.id)" [attr.isActive]="note.id === currentNoteId">
+                <mat-icon *ngIf="note.needsExport" class="min-w-[24px]">upgrade</mat-icon>
+                <h3 class="text-ellipsis overflow-hidden break-words whitespace-nowrap">{{note.title}}</h3>
+            </div>
+            <hr class="border-white/50" *ngIf="(i + 1) !== allNotes.length">
+        </div>
     </div>
 </div>

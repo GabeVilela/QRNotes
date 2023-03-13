@@ -5,6 +5,7 @@ import {
   OnInit,
   EventEmitter,
   OnDestroy,
+  OnChanges
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -28,7 +29,7 @@ import { Subscription, tap } from 'rxjs';
   templateUrl: './note-form.component.html',
   styleUrls: ['./note-form.component.scss'],
 })
-export class NoteFormComponent implements OnInit, OnDestroy {
+export class NoteFormComponent implements OnInit, OnDestroy, OnChanges {
   @Input('note') noteDTO: NoteDTO = {
     id: -1,
     content: '',
@@ -61,6 +62,11 @@ export class NoteFormComponent implements OnInit, OnDestroy {
     if (this.contentChangesSubscription !== undefined) {
       this.contentChangesSubscription.unsubscribe();
     }
+  }
+
+  ngOnChanges():void{
+    this.titleField.setValue(this.noteDTO.title,{emitEvent: false});
+    this.contentField.setValue(this.noteDTO.content,{emitEvent: false});
   }
 
   initializeForm(): void {

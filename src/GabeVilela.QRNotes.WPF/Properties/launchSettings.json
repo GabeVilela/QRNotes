@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "Angular dist": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ANGULAR_DEV_SERVER": "false"
+      }
+    },
+    "Angular Localhost": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ANGULAR_DEV_SERVER": "true"
+      }
+    }
+  }
+}

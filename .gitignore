@@ -2,3 +2,4 @@
 **/obj/
 **/.vs/
 src/**/*.user
+**/resources/ui

@@ -5,7 +5,7 @@ import { NoteFormComponent } from '../../ui/note-form/note-form.component';
 import { NoteDTO } from '../../data-access/note-dto.interface';
 import { NoteService } from '../../data-access/note/note.service';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
-import { map, Subscription, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, map, Subscription, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-note-view',
@@ -20,6 +20,8 @@ export class NoteViewPage implements OnInit, OnDestroy {
   currentNote?:NoteDTO;
   currentNoteId?: number;
   routeParamsSubscription?: Subscription;
+  allNotesSubscription?: Subscription;
+  allNotes:NoteDTO[] = [];
 
   constructor(private service:NoteService,private route:ActivatedRoute){}
 
@@ -38,11 +40,19 @@ export class NoteViewPage implements OnInit, OnDestroy {
 
       this.fetchNote();
     });
+
+    this.allNotesSubscription = this.service.allNotes$.subscribe((val) => {
+      this.allNotes = val;
+    });
   }
 
   ngOnDestroy(){
     if (this.routeParamsSubscription !== undefined){
       this.routeParamsSubscription.unsubscribe();
+    }
+
+    if(this.allNotesSubscription !== undefined){
+      this.allNotesSubscription.unsubscribe();
     }
   }
 
@@ -58,5 +68,17 @@ export class NoteViewPage implements OnInit, OnDestroy {
     if (this.currentNote === undefined) return;
 
     this.service.update(this.currentNote.id, event);
+  }
+
+  createNote():void{
+    let now = new Date();
+    let newNote:NoteDTO = {
+      id: now.getTime(),
+      title: `New note - ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`,
+      content: '',
+      needsExport: true
+    };
+    this.currentNoteId = this.service.add(newNote);
+    this.fetchNote();
   }
 }

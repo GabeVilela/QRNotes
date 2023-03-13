@@ -18,6 +18,8 @@ export class NoteQrcodePage implements OnInit, OnDestroy{
   currentNote?:NoteDTO;
   currentNoteId?: number;
   routeParamsSubscription?: Subscription;
+  qrcodeSizes = [128,512,768,1024];
+  sizeIndex = 2;
 
   constructor(private service:NoteService,private route:ActivatedRoute,private router:Router){}
 
@@ -48,7 +50,14 @@ export class NoteQrcodePage implements OnInit, OnDestroy{
     //this.currentNote = this.service.notes[0];
     if (this.currentNoteId !== undefined){
       this.currentNote = this.service.get(this.currentNoteId);
+      
+      if (this.currentNote !== undefined){
+        this.service.update(this.currentNoteId,{needsExport: false});
+        return;
+      }
+
     }
+    this.redirectBack();
   }
 
   redirectBack():void{
@@ -58,5 +67,14 @@ export class NoteQrcodePage implements OnInit, OnDestroy{
     }
     
     this.router.navigate(fragments);
+  }
+
+  toggleSize():void{
+    if (this.sizeIndex + 1 === this.qrcodeSizes.length){
+      this.sizeIndex = 0;
+      return;
+    }
+
+    this.sizeIndex++;
   }
 }
