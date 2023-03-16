@@ -70,6 +70,7 @@ export class NoteFormComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges():void{
     this.titleField.setValue(this.noteDTO.title,{emitEvent: false});
     this.contentField.setValue(this.noteDTO.content,{emitEvent: false});
+    this.updateCounters();
   }
 
   initializeForm(): void {
@@ -164,7 +165,6 @@ export class NoteFormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   inputHandler(event: any): void{
-    console.log(event);
     switch (event.key) {
       case 'Tab':
         event.preventDefault();
