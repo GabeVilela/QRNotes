@@ -1,14 +1,24 @@
 <div class="flex flex-col items-center justify-center p-2 gap-2" *ngIf="currentNote !== undefined">
     <div class="flex flex-1 w-[100%] flex-row justify-between gap-2">
-        <span class="flex-1"></span>
+        <span class="text-white text-xl font-bold">{{currentNote.title}}</span>
         <button mat-stroked-button (click)="redirectBack()">GO BACK</button>
     </div>
-    <div class="flex flex-col items-center">
-        <span class="text-white text-xl font-bold">{{currentNote.title}}</span>
-        <div class="flex flex-row justify-between gap-2">
-            <button mat-stroked-button (click)="toggleSize()">TOGGLE SIZE</button>
-            <button mat-raised-button (click)="toggleTitle()" [color]="isTitleEnabled?'primary':null">INCLUDE TITLE: {{ isTitleEnabled?'ON':'OFF' }}</button>
-        </div>
+    <div class="flex flex-row w-[100%] justify-between items-center gap-2">
+        <button mat-stroked-button (click)="toggleSize()">TOGGLE SIZE</button>
+        <button mat-raised-button (click)="toggleTitle()" [color]="isTitleEnabled?'primary':null">
+            INCLUDE TITLE: {{ isTitleEnabled?'ON':'OFF' }}
+        </button>
+        <button mat-raised-button [color]="isCompatModeEnabled?'primary':null" (click)="toggleCompatMode()">
+            USE COMPATIBILITY MODE: {{isCompatModeEnabled?'ON':'OFF'}}
+        </button>
+        <span class="flex-1"></span>
+        <span class="text-gray-400">Showing QR code {{currentCode + 1}} of {{totalCodes}} total.</span>
+        <button mat-icon-button class="iconBtn" (click)="skipCode(-1)" [disabled]="currentCode <= 0">
+            <mat-icon class="fill-white">skip_previous</mat-icon>
+        </button>
+        <button mat-icon-button class="iconBtn" (click)="skipCode(1)" [disabled]="currentCode + 1 >= totalCodes">
+            <mat-icon class="fill-white">skip_next</mat-icon>
+        </button>
     </div>
-    <qrcode [qrdata]="content" [width]="qrcodeSizes[sizeIndex]" [errorCorrectionLevel]="'M'"></qrcode>
+    <qrcode qrdata="{{noteContent$ | async}}" [width]="qrcodeSizes[sizeIndex]" [errorCorrectionLevel]="'M'"></qrcode>
 </div>

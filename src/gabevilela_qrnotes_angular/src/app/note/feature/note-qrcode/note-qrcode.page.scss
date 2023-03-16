@@ -1,0 +1,11 @@
+.iconBtn{
+    mat-icon{
+        @apply text-white #{!important};
+    }
+}
+
+.iconBtn:disabled{
+    mat-icon{
+        @apply text-gray-500 #{!important};
+    }
+}

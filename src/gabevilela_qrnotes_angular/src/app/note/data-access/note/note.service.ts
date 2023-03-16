@@ -11,7 +11,13 @@ export class NoteService {
   allNotes$ = new BehaviorSubject<NoteDTO[]>(this.notes);
   qrCodeSettings = {
     sizeIndex: 2,
-    includeTitle: true
+    includeTitle: true,
+    useCompatibilityMode: false,
+    breakAfter: () => {
+      if (this.qrCodeSettings.useCompatibilityMode) return 64;
+      return 2000;
+    }
+
   };
 
   constructor() {}
