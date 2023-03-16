@@ -23,7 +23,7 @@ export class NoteViewPage implements OnInit, OnDestroy {
   allNotesSubscription?: Subscription;
   allNotes:NoteDTO[] = [];
 
-  constructor(private service:NoteService,private route:ActivatedRoute){}
+  constructor(private service:NoteService,private route:ActivatedRoute,private router:Router){}
 
   ngOnInit(){
     this.routeParamsSubscription = this.route.params.subscribe((params:Params) => {
@@ -78,7 +78,7 @@ export class NoteViewPage implements OnInit, OnDestroy {
       content: '',
       needsExport: true
     };
-    this.currentNoteId = this.service.add(newNote);
+    this.router.navigate(['note',this.service.add(newNote)]);
     this.fetchNote();
   }
 }
