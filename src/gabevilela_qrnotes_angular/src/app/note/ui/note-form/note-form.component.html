@@ -4,7 +4,7 @@
 </div>
 
 <div class="flex-1 box-border h-[100vh]">
-    <textarea class="w-[100%] h-[100%] box-border text-base" placeholder="Type your note here" [formControl]="contentField" (input)="updateCounters()"></textarea>
+    <textarea class="w-[100%] h-[100%] box-border text-base" placeholder="Type your note here" [formControl]="contentField" (input)="updateCounters()" (keydown)="inputHandler($event)"></textarea>
 </div>
 <div class="flex flex-row justify-center items-center" id="counters">
     <span>Characters: {{charCount}}</span>
