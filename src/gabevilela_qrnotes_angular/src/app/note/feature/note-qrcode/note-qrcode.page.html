@@ -5,7 +5,10 @@
     </div>
     <div class="flex flex-col items-center">
         <span class="text-white text-xl font-bold">{{currentNote.title}}</span>
-        <button mat-stroked-button (click)="toggleSize()">TOGGLE SIZE</button>
+        <div class="flex flex-row justify-between gap-2">
+            <button mat-stroked-button (click)="toggleSize()">TOGGLE SIZE</button>
+            <button mat-raised-button (click)="toggleTitle()" [color]="isTitleEnabled?'primary':null">INCLUDE TITLE: {{ isTitleEnabled?'ON':'OFF' }}</button>
+        </div>
     </div>
-    <qrcode [qrdata]="'# ' + currentNote.title + '\n' + currentNote.content" [width]="qrcodeSizes[sizeIndex]" [errorCorrectionLevel]="'M'"></qrcode>
+    <qrcode [qrdata]="content" [width]="qrcodeSizes[sizeIndex]" [errorCorrectionLevel]="'M'"></qrcode>
 </div>

@@ -9,6 +9,10 @@ export class NoteService {
   notes: NoteDTO[] = [];
 
   allNotes$ = new BehaviorSubject<NoteDTO[]>(this.notes);
+  qrCodeSettings = {
+    sizeIndex: 2,
+    includeTitle: true
+  };
 
   constructor() {}
 

@@ -19,7 +19,23 @@ export class NoteQrcodePage implements OnInit, OnDestroy{
   currentNoteId?: number;
   routeParamsSubscription?: Subscription;
   qrcodeSizes = [128,512,768,1024];
-  sizeIndex = 2;
+
+  get content():string{
+    if (this.currentNote === undefined) return "";
+
+    if (this.service.qrCodeSettings.includeTitle)
+      return `# ${this.currentNote.title}\n${this.currentNote.content}`;
+
+    return this.currentNote.content;
+  }
+
+  get isTitleEnabled():boolean{
+    return this.service.qrCodeSettings.includeTitle;
+  }
+
+  get sizeIndex():number{
+    return this.service.qrCodeSettings.sizeIndex;
+  }
 
   constructor(private service:NoteService,private route:ActivatedRoute,private router:Router){}
 
@@ -71,10 +87,14 @@ export class NoteQrcodePage implements OnInit, OnDestroy{
 
   toggleSize():void{
     if (this.sizeIndex + 1 === this.qrcodeSizes.length){
-      this.sizeIndex = 0;
+      this.service.qrCodeSettings.sizeIndex = 0;
       return;
     }
 
-    this.sizeIndex++;
+    this.service.qrCodeSettings.sizeIndex++;
+  }
+
+  toggleTitle():void{
+    this.service.qrCodeSettings.includeTitle = !this.service.qrCodeSettings.includeTitle;
   }
 }
