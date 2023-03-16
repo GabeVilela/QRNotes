@@ -79,6 +79,5 @@ export class NoteViewPage implements OnInit, OnDestroy {
       needsExport: true
     };
     this.router.navigate(['note',this.service.add(newNote)]);
-    this.fetchNote();
   }
 }
