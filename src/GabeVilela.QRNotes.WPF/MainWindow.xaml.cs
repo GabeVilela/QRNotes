@@ -40,10 +40,10 @@ namespace GabeVilela.QRNotes.WPF
             WebView.CoreWebView2.Settings.IsGeneralAutofillEnabled = false;
             WebView.CoreWebView2.Settings.IsPasswordAutosaveEnabled = false;
 
-            WebView.CoreWebView2.AddHostObjectToScript("qrNotes", new
+            /*WebView.CoreWebView2.AddHostObjectToScript("qrNotes", new WindowHostObject
             {
                 Version = GetAppVersion()
-            });
+            });*/
             ipc = new IpcHandler(WebView.CoreWebView2);
 
 #if DEBUG
@@ -89,7 +89,8 @@ namespace GabeVilela.QRNotes.WPF
             }
         }
 
-        private AppVersion GetAppVersion() => new AppVersion()
+
+         private AppVersion GetAppVersion() => new AppVersion()
         {
             Assembly = Assembly.GetExecutingAssembly().GetName().Version.ToString(),
             WebView = WebView.CoreWebView2.Environment.BrowserVersionString
