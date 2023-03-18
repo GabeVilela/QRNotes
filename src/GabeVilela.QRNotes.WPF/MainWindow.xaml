@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GabeVilela.QRNotes.WPF"
         xmlns:Wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf" x:Class="GabeVilela.QRNotes.WPF.MainWindow"
         mc:Ignorable="d"
-        Title="QR Notes" Height="450" Width="800" WindowStartupLocation="CenterScreen" Background="#FF121212">
+        Title="QR Notes" Height="450" Width="800" WindowStartupLocation="CenterScreen" Background="#FF21222c">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
