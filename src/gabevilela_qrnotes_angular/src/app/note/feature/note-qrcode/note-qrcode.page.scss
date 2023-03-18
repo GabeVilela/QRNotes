@@ -6,6 +6,6 @@
 
 .iconBtn:disabled{
     mat-icon{
-        @apply text-gray-500 #{!important};
+        @apply text-grey #{!important};
     }
 }

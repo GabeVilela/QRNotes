@@ -12,7 +12,7 @@
             USE COMPATIBILITY MODE: {{isCompatModeEnabled?'ON':'OFF'}}
         </button>
         <span class="flex-1"></span>
-        <span class="text-gray-400">Showing QR code {{currentCode + 1}} of {{totalCodes}} total.</span>
+        <span class="text-grey-secondary">Showing QR code {{currentCode + 1}} of {{totalCodes}} total.</span>
         <button mat-icon-button class="iconBtn" (click)="skipCode(-1)" [disabled]="currentCode <= 0">
             <mat-icon class="fill-white">skip_previous</mat-icon>
         </button>
