@@ -7,7 +7,7 @@ namespace GabeVilela.QRNotes.WPF.DTO
 {
     [ClassInterface(ClassInterfaceType.AutoDual)]
     [ComVisible(true)]
-    class WindowHostObject
+    public class WindowHostObject
     {
         public AppVersion Version { get; set; }
     }

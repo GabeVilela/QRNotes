@@ -40,10 +40,10 @@ namespace GabeVilela.QRNotes.WPF
             WebView.CoreWebView2.Settings.IsGeneralAutofillEnabled = false;
             WebView.CoreWebView2.Settings.IsPasswordAutosaveEnabled = false;
 
-            /*WebView.CoreWebView2.AddHostObjectToScript("qrNotes", new WindowHostObject
+            WebView.CoreWebView2.AddHostObjectToScript("qrnotes", new WindowHostObject
             {
                 Version = GetAppVersion()
-            });*/
+            });
             ipc = new IpcHandler(WebView.CoreWebView2);
 
 #if DEBUG
