@@ -1,12 +1,42 @@
 <div class="flex flex-row box-border gap-2 items-center">
-    <input type="text" class="flex-1 text-xl font-bold" placeholder="Note Title" [formControl]="titleField"/>
-    <button mat-stroked-button class="flex-[25%] max-w-[100px] min-w-[60px]" (click)="redirectToQR()">EXPORT</button>
+  <input
+    type="text"
+    class="flex-1 text-xl font-bold"
+    [placeholder]="note.onBin?'Untitled note':'Note Title'"
+    [formControl]="titleField"
+  />
+  <button
+    mat-stroked-button
+    class="flex-[25%] max-w-[100px] min-w-[60px]"
+    (click)="redirectToQR()"
+    *ngIf="!note.onBin else restoreButton"
+  >
+    EXPORT
+  </button>
+  <ng-template #restoreButton>
+    <button
+    mat-raised-button
+    color="warn"
+    class="flex-[25%] max-w-[230px] min-w-[60px]"
+    (click)="onDeleteClick()"
+  >
+  DELETE PERMANENTLY
+  </button>
+  </ng-template>
 </div>
 
 <div class="flex-1 box-border h-[100vh]">
-    <textarea class="w-[100%] h-[100%] box-border text-base" placeholder="Type your note here" [formControl]="contentField" (input)="updateCounters()" (keydown)="inputHandler($event)"></textarea>
+  <textarea
+    class="w-[100%] h-[100%] box-border text-base"
+    [placeholder]="note.onBin?'':'Type your note here'"
+    [formControl]="contentField"
+    (input)="updateCounters()"
+    (keydown)="inputHandler($event)"
+  ></textarea>
 </div>
 <div class="flex flex-row justify-center items-center" id="counters">
-    <span>Characters: {{charCount}}</span>
-    <span class="border-l-2 border-solid border-gray-500 pl-2 ml-2">Words: {{wordCount}}</span>
+  <span>Characters: {{ charCount }}</span>
+  <span class="border-l-2 border-solid border-grey pl-2 ml-2"
+    >Words: {{ wordCount }}</span
+  >
 </div>

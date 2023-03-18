@@ -1,4 +1,8 @@
-<div class="flex flex-col h-[100vh] w-[100%] max-w-[100%] overflow-hidden" id="sidebarContainer">
+<div
+  class="flex flex-col h-[100vh] w-[100%] max-w-[100%] overflow-hidden bg-black-darkest"
+  attr.binExpanded="{{ isBinExpanded }}"
+  id="main"
+>
   <div
     class="flex flex-1 flex-row items-stretch justify-items-stretch p-2 pb-0 box-border"
   >
@@ -8,30 +12,40 @@
     </button>
   </div>
   <div
-    class="flex flex-col items-stretch mr-2 pl-2 pr-1 h-[100vh] w-[100%] max-w-[100%] overflow-y-auto overflow-x-hidden py-2"
-    *ngIf="allNotes.length > 0"
-    id="scrollContainer"
+    class="flex flex-col items-stretch mr-2 p-2 w-[100%] max-w-[100%] overflow-y-auto overflow-x-hidden"
+    id="notesScrollContainer"
   >
     <div *ngFor="let note of allNotes.slice().reverse(); index as i">
       <app-note-list-item
         [note]="note"
-        (onDeleteClick)="onNoteMoveToBin(note.id)"
-        (onSelect)="openNote(note.id)"
         [isActive]="currentNoteId === note.id"
+        (onSelect)="openNote(note.id)"
+        (onDeleteClick)="onNoteMoveToBin(note.id)"
       ></app-note-list-item>
       <hr class="border-white/50" *ngIf="i + 1 !== allNotes.length" />
     </div>
   </div>
   <div
-    class="flex flex-col items-stretch mr-2 pl-2 pr-1 h-[50vh] w-[100%] max-w-[100%] overflow-y-auto overflow-x-hidden py-2"
-    *ngIf="notesOnBin.length > 0"
+    class="flex flex-row justify-start items-center h-[40px] bg-black-darker gap-1 pl-2 hover:cursor-pointer no-select"
+    (click)="toggleBin($event)"
   >
-    <div class="flex flex-row justify-center h-[40px]" id="binToggle">
-      <mat-icon>delete_outline</mat-icon>
-      <span class="text-gray-300">Trash bin</span>
-    </div>
+    <mat-icon *ngIf="isBinExpanded" class="text-white/60">expand_more</mat-icon>
+    <mat-icon *ngIf="!isBinExpanded" class="text-white/60"
+      >expand_less</mat-icon
+    >
+    <span class="text-white/70">Trash bin</span>
+  </div>
+  <div
+    class="flex flex-col items-stretch w-[100%] max-w-[100%] overflow-y-auto overflow-x-hidden"
+    id="binScrollContainer"
+  >
     <div *ngFor="let note of notesOnBin.slice().reverse(); index as i">
-      <app-note-list-item [note]="note" (onSelect)="openNote(note.id)" [isActive]="currentNoteId === note.id"></app-note-list-item>
+      <app-note-list-item
+        [note]="note"
+        [isActive]="currentNoteId === note.id"
+        (onSelect)="openNote(note.id)"
+        (onRestoreClick)="onRestore(note.id)"
+      ></app-note-list-item>
       <hr class="border-white/50" *ngIf="i + 1 !== notesOnBin.length" />
     </div>
   </div>

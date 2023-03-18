@@ -6,6 +6,7 @@ import { NoteDTO } from '../../data-access/note-dto.interface';
 import { NoteService } from '../../data-access/note/note.service';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { BehaviorSubject, filter, map, Subscription, switchMap, tap } from 'rxjs';
+import { UserPreferencesService } from 'src/app/shared/services/user-preferences/user-preferences.service';
 
 interface Subscriptions{
  [key:string]:Subscription;
@@ -26,8 +27,11 @@ export class NoteViewPage implements OnInit, OnDestroy {
   subscriptions:Subscriptions = {}
   allNotes:NoteDTO[] = [];
   notesOnBin:NoteDTO[] = [];
+  get isBinExpanded():boolean {
+    return this.prefs.isBinPanelExpanded;
+  }
 
-  constructor(private service:NoteService,private route:ActivatedRoute,private router:Router){}
+  constructor(private service:NoteService,private route:ActivatedRoute,private router:Router,private prefs:UserPreferencesService){}
 
   ngOnInit(){
     this.subscriptions['routeParams'] = this.route.params.subscribe((params:Params) => {
@@ -62,6 +66,7 @@ export class NoteViewPage implements OnInit, OnDestroy {
     this.currentNoteId = this.currentNote.id;*/
     if (this.currentNoteId !== undefined){
       this.currentNote = this.service.get(this.currentNoteId);
+      if (this.currentNote === undefined) this.closeNote();
     }
   }
 
@@ -77,13 +82,33 @@ export class NoteViewPage implements OnInit, OnDestroy {
       id: now.getTime(),
       title: `New note - ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`,
       content: '',
-      needsExport: true
+      needsExport: true,
+      onBin: false
     };
     this.router.navigate(['note',this.service.add(newNote)]);
   }
 
   moveNoteToBin(id:number){
     this.service.update(id,{onBin: true});
+    this.closeNote();
+  }
+
+  closeNote():void{
     this.currentNoteId = undefined;
+    this.router.navigate(['note']);
+  }
+
+  toggleBin():void{
+    this.prefs.isBinPanelExpanded = !this.prefs.isBinPanelExpanded;
+  }
+
+  deleteNote():void{
+    if (this.currentNote === undefined) return;
+    this.service.delete(this.currentNote.id);
+    this.closeNote();
+  }
+
+  restoreNote(id:number):void{
+    this.service.update(id,{onBin:false});
   }
 }

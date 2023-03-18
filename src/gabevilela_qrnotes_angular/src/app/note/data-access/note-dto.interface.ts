@@ -3,7 +3,7 @@ export interface NoteDTO{
     title: string,
     content: string,
     needsExport:boolean,
-    onBin?:boolean
+    onBin:boolean
 }
 
 /**

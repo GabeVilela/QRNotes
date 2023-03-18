@@ -12,9 +12,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
-import { NoteDTO } from '../../data-access/note-dto.interface';
+import { getDefaultNote, NoteDTO } from '../../data-access/note-dto.interface';
 import { Router } from '@angular/router';
-import { Subscription, tap } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 // Matches both bullet lists "- " and numbered lists "1. "
 const listItemRegex = new RegExp(/^(\t{0,}(-|\d{1,}\.)\s)/);
@@ -27,22 +27,20 @@ const listItemRegex = new RegExp(/^(\t{0,}(-|\d{1,}\.)\s)/);
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   templateUrl: './note-form.component.html',
   styleUrls: ['./note-form.component.scss'],
 })
 export class NoteFormComponent implements OnInit, OnDestroy, OnChanges {
-  @Input('note') noteDTO: NoteDTO = {
-    id: -1,
-    content: '',
-    title: '',
-    needsExport: true,
-  };
+  @Input('note') note: NoteDTO = getDefaultNote();
 
-  onNoteChangeEmitter = new EventEmitter<Partial<NoteDTO>>();
+  private onNoteChangeEmitter = new EventEmitter<Partial<NoteDTO>>();
   @Output('onNoteChange') onNoteChange$ =
     this.onNoteChangeEmitter.asObservable();
+
+  private onDeleteClickEmitter = new EventEmitter();
+  @Output('onDeleteClick') onDeleteClick$ = this.onDeleteClickEmitter.asObservable();
 
   charCount: number = 0;
   wordCount: number = 0;
@@ -68,14 +66,21 @@ export class NoteFormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges():void{
-    this.titleField.setValue(this.noteDTO.title,{emitEvent: false});
-    this.contentField.setValue(this.noteDTO.content,{emitEvent: false});
+    this.titleField.setValue(this.note.title,{emitEvent: false});
+    this.contentField.setValue(this.note.content,{emitEvent: false});
+    if (this.note.onBin){
+      this.titleField.disable({emitEvent: false});
+      this.contentField.disable({emitEvent: false});
+    }else{
+      this.titleField.enable({emitEvent: false});
+      this.contentField.enable({emitEvent: false});
+    }
     this.updateCounters();
   }
 
   initializeForm(): void {
-    this.titleField?.setValue(this.noteDTO.title);
-    this.contentField?.setValue(this.noteDTO.content);
+    this.titleField?.setValue(this.note.title);
+    this.contentField?.setValue(this.note.content);
 
     if (this.titleChangesSubscription === undefined) {
       this.titleChangesSubscription = this.titleField.valueChanges.subscribe(
@@ -161,7 +166,7 @@ export class NoteFormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   redirectToQR(): void {
-    this.router.navigate(['note', 'qrcode', `${this.noteDTO.id}`]);
+    this.router.navigate(['note', 'qrcode', `${this.note.id}`]);
   }
 
   inputHandler(event: any): void{
@@ -278,5 +283,9 @@ export class NoteFormComponent implements OnInit, OnDestroy, OnChanges {
   private getTextAfter(index:number,fullText:string):string{
     if (index + 1 >= fullText.length) return "";
     return fullText.substring(index + 1);
+  }
+
+  onDeleteClick():void{
+    this.onDeleteClickEmitter.emit();
   }
 }

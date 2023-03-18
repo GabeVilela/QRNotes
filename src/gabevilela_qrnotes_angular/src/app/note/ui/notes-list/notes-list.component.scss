@@ -2,22 +2,36 @@ h3{
     margin-bottom: 0px !important;
 }
 
-#sidebarContainer{
-  background-color: #15171b;
+#main{
+  #notesScrollContainer{
+    @apply flex-[100%];
+  }
+  #binScrollContainer{
+    @apply h-0 box-border py-0;
+  }
 }
 
-#scrollContainer::-webkit-scrollbar {
+#main[binExpanded="true"]{
+  #notesScrollContainer,#binScrollContainer{
+    @apply flex-[50%];
+  }
+  #binScrollContainer{
+    @apply h-full py-2;
+  }
+}
+
+#binScrollContainer{
+  @apply transition-[height] ease-in-out duration-200;
+}
+
+#notesScrollContainer::-webkit-scrollbar {
     @apply w-[6px];
   }
   
-  #scrollContainer::-webkit-scrollbar-track {
+  #notesScrollContainer::-webkit-scrollbar-track {
     @apply bg-transparent;
   }
   
-  #scrollContainer::-webkit-scrollbar-thumb {
+  #notesScrollContainer::-webkit-scrollbar-thumb {
     @apply bg-white/40 rounded-2xl border-none;
-  }
-
-  #binToggle{
-    background-color: #202020;
   }

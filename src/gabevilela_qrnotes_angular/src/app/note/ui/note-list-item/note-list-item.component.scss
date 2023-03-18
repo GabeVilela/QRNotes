@@ -3,10 +3,27 @@ button:hover {
   display: flex;
 }
 
-[isActive="true"]{
-  @apply text-purple-400 bg-purple-400/20 hover:bg-purple-400/20 hover:cursor-default;
-}
-
 .removeMargin {
   margin: 0;
+}
+
+#mainContainer{
+  @apply text-white/50;
+
+  h3{
+    @apply text-ellipsis text-white/50 overflow-hidden break-words whitespace-nowrap removeMargin;
+  }
+
+}
+
+#mainContainer[isActive="true"]{
+  @apply text-purple bg-purple-100 hover:bg-purple-200 hover:cursor-default;
+
+  h3{
+    @apply text-purple;
+  }
+}
+
+.italic{
+  font-style: italic !important;
 }

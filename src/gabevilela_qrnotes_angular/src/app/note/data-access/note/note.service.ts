@@ -70,6 +70,13 @@ export class NoteService {
     this.refreshAllNotes();
     return note.id;
   }
+
+  delete(id:number):void{
+    const indexOnArray = this.notes.findIndex(n => n.id === id);
+    if (indexOnArray < 0) return;
+    this.notes.splice(indexOnArray,1);
+    this.refreshAllNotes();
+  }
   
   private refreshAllNotes():void{
     this.allNotesSubject.next(this.notes);
