@@ -1,17 +1,38 @@
-<div class="flex flex-col h-[100vh] w-[100%] max-w-[100%] overflow-hidden">
-    <div class="flex flex-1 flex-row items-stretch justify-items-stretch p-2 pb-0 box-border">
-        <button mat-button class="flex-1" (click)="createNote()">
-            <mat-icon>add</mat-icon>
-            New Note
-        </button>
+<div class="flex flex-col h-[100vh] w-[100%] max-w-[100%] overflow-hidden" id="sidebarContainer">
+  <div
+    class="flex flex-1 flex-row items-stretch justify-items-stretch p-2 pb-0 box-border"
+  >
+    <button mat-button class="flex-1" (click)="createNote()">
+      <mat-icon>add</mat-icon>
+      New Note
+    </button>
+  </div>
+  <div
+    class="flex flex-col items-stretch mr-2 pl-2 pr-1 h-[100vh] w-[100%] max-w-[100%] overflow-y-auto overflow-x-hidden py-2"
+    *ngIf="allNotes.length > 0"
+    id="scrollContainer"
+  >
+    <div *ngFor="let note of allNotes.slice().reverse(); index as i">
+      <app-note-list-item
+        [note]="note"
+        (onDeleteClick)="onNoteMoveToBin(note.id)"
+        (onSelect)="openNote(note.id)"
+        [isActive]="currentNoteId === note.id"
+      ></app-note-list-item>
+      <hr class="border-white/50" *ngIf="i + 1 !== allNotes.length" />
     </div>
-    <div class="flex flex-col items-stretch mr-2 pl-2 pr-1 h-[100vh] w-[100%] max-w-[100%] overflow-y-auto overflow-x-hidden py-2" *ngIf="allNotes !== undefined" id="scrollContainer">
-        <div *ngFor="let note of allNotes.slice().reverse(); index as i">
-            <div class="p-2 text-gray-300 hover:bg-white/10 rounded-md flex flex-row gap-1 items-center justify-start hover:cursor-pointer m-1" (click)="openNote(note.id)" [attr.isActive]="note.id === currentNoteId">
-                <mat-icon *ngIf="note.needsExport" class="min-w-[24px]">upgrade</mat-icon>
-                <h3 class="text-ellipsis overflow-hidden break-words whitespace-nowrap">{{note.title}}</h3>
-            </div>
-            <hr class="border-white/50" *ngIf="(i + 1) !== allNotes.length">
-        </div>
+  </div>
+  <div
+    class="flex flex-col items-stretch mr-2 pl-2 pr-1 h-[50vh] w-[100%] max-w-[100%] overflow-y-auto overflow-x-hidden py-2"
+    *ngIf="notesOnBin.length > 0"
+  >
+    <div class="flex flex-row justify-center h-[40px]" id="binToggle">
+      <mat-icon>delete_outline</mat-icon>
+      <span class="text-gray-300">Trash bin</span>
     </div>
+    <div *ngFor="let note of notesOnBin.slice().reverse(); index as i">
+      <app-note-list-item [note]="note" (onSelect)="openNote(note.id)" [isActive]="currentNoteId === note.id"></app-note-list-item>
+      <hr class="border-white/50" *ngIf="i + 1 !== notesOnBin.length" />
+    </div>
+  </div>
 </div>

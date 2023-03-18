@@ -1,0 +1,11 @@
+<div *ngIf="note !== undefined" class="p-2 text-gray-300 hover:bg-white/10 rounded-md flex flex-row gap-1 items-center justify-start hover:cursor-pointer m-1" (click)="onNoteClick()" [attr.isActive]="isActive" id="mainContainer">
+    <mat-icon *ngIf="note.needsExport" class="min-w-[24px]">upgrade</mat-icon>
+    <h3 class="text-ellipsis overflow-hidden break-words whitespace-nowrap removeMargin">{{note.title}}</h3>
+    <span class="flex-1"></span>
+    <button *ngIf="!note.onBin" class="hidden hover:bg-white/5 flex-col justify-center z-10" (click)="moveToBinClick($event)">
+        <mat-icon>close</mat-icon>
+    </button>
+    <button *ngIf="note.onBin" class="hidden hover:bg-white/5 flex-col justify-center" (click)="restoreClick()">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>

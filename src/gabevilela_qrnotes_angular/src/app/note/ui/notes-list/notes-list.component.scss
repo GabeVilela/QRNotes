@@ -2,8 +2,8 @@ h3{
     margin-bottom: 0px !important;
 }
 
-[isActive="true"]{
-    @apply text-purple-400 bg-purple-400/20 hover:bg-purple-400/20 hover:cursor-default;
+#sidebarContainer{
+  background-color: #15171b;
 }
 
 #scrollContainer::-webkit-scrollbar {
@@ -16,4 +16,8 @@ h3{
   
   #scrollContainer::-webkit-scrollbar-thumb {
     @apply bg-white/40 rounded-2xl border-none;
+  }
+
+  #binToggle{
+    background-color: #202020;
   }

@@ -1,0 +1,12 @@
+#mainContainer:hover button,
+button:hover {
+  display: flex;
+}
+
+[isActive="true"]{
+  @apply text-purple-400 bg-purple-400/20 hover:bg-purple-400/20 hover:cursor-default;
+}
+
+.removeMargin {
+  margin: 0;
+}

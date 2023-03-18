@@ -5,7 +5,11 @@ import { NoteFormComponent } from '../../ui/note-form/note-form.component';
 import { NoteDTO } from '../../data-access/note-dto.interface';
 import { NoteService } from '../../data-access/note/note.service';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
-import { BehaviorSubject, map, Subscription, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, filter, map, Subscription, switchMap, tap } from 'rxjs';
+
+interface Subscriptions{
+ [key:string]:Subscription;
+}
 
 @Component({
   selector: 'app-note-view',
@@ -19,14 +23,14 @@ NoteFormComponent],
 export class NoteViewPage implements OnInit, OnDestroy {
   currentNote?:NoteDTO;
   currentNoteId?: number;
-  routeParamsSubscription?: Subscription;
-  allNotesSubscription?: Subscription;
+  subscriptions:Subscriptions = {}
   allNotes:NoteDTO[] = [];
+  notesOnBin:NoteDTO[] = [];
 
   constructor(private service:NoteService,private route:ActivatedRoute,private router:Router){}
 
   ngOnInit(){
-    this.routeParamsSubscription = this.route.params.subscribe((params:Params) => {
+    this.subscriptions['routeParams'] = this.route.params.subscribe((params:Params) => {
       this.currentNoteId = undefined;
       const noteId = params['id'];
 
@@ -41,18 +45,15 @@ export class NoteViewPage implements OnInit, OnDestroy {
       this.fetchNote();
     });
 
-    this.allNotesSubscription = this.service.allNotes$.subscribe((val) => {
-      this.allNotes = val;
+    this.subscriptions['allNotes'] = this.service.allNotes$.subscribe((val) => {
+      this.allNotes = val.filter(n => !n.onBin);
+      this.notesOnBin = val.filter(n => n.onBin);
     });
   }
 
   ngOnDestroy(){
-    if (this.routeParamsSubscription !== undefined){
-      this.routeParamsSubscription.unsubscribe();
-    }
-
-    if(this.allNotesSubscription !== undefined){
-      this.allNotesSubscription.unsubscribe();
+    for (const key in this.subscriptions) {
+      this.subscriptions[key].unsubscribe();
     }
   }
 
@@ -79,5 +80,10 @@ export class NoteViewPage implements OnInit, OnDestroy {
       needsExport: true
     };
     this.router.navigate(['note',this.service.add(newNote)]);
+  }
+
+  moveNoteToBin(id:number){
+    this.service.update(id,{onBin: true});
+    this.currentNoteId = undefined;
   }
 }
