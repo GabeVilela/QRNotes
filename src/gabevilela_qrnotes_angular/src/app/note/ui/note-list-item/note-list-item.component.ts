@@ -24,7 +24,6 @@ export class NoteListItemComponent {
   @Output() onRestoreClick = this.onRestoreClickEmitter.asObservable();
 
   moveToBinClick(event:MouseEvent):void{
-    console.log("Clicked!");
     event.stopPropagation();
     this.onDeleteClickEmitter.emit(this.note.id);
   }

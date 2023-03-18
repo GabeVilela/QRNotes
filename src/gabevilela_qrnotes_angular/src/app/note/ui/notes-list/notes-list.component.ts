@@ -29,7 +29,7 @@ export class NotesListComponent {
   @Output('onNoteMoveToBin') onNoteMoveToBin$ = this.onNoteMoveToBinEmitter.asObservable();
 
   private onRestoreEmitter = new EventEmitter<number>();
-  @Output('onRestore') onRestore$ = this.onRestoreEmitter.asObservable();
+  @Output('onNoteRestore') onRestore$ = this.onRestoreEmitter.asObservable();
 
   constructor(private router:Router){}
   
